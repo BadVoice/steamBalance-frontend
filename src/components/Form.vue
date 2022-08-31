@@ -28,7 +28,8 @@
           <div>
             <label for="number" class="sr-only">Сумма</label>
             <input 
-            v-model="amount"
+            v-model="userAmount"
+          
             id="SUM" name="SUM" type="number" autocomplete="SUM" required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму" />
           </div>
         </div>
@@ -54,26 +55,51 @@
       </form>
     </div>
 
-    <div class="flex min-h-full items-center justify-around py-12 px-4 sm:px-6 lg:px-8">
-        <div class="form__calc flex">
-            <div class="">
-              <span>Получите на баланс Steam:
-                </span>
-            </div>
-
-            <div>{{ amount }}</div>
+    <div class="flex min-h-full flex-col items-center justify-around py-12 px-4 sm:px-6 lg:px-8">
+        <div class="flex">
+          <div class="flex gap-5">
+              <div class="flex ">
+                <span>Вы заплатите: </span>
+              </div>
+              
+              <div class="flex">{{ userAmount }}</div>
+          </div>
         </div>
 
+        <div class="flex gap-5">
+          <div class="flex">
+            <span>Комиссия:</span>
+          </div>
+          <div class="flex">{{ getComission ? getComission : '' }}</div>
+        </div>
+
+        <div class="flex gap-5">
+          <div class="flex">
+            <span>Получите на Steam:</span>
+          </div>
+          <div class="flex">{{ getUserResultAmount ? getUserResultAmount : '' }}</div>
+        </div>
+    </div>
+
       </div>
-  </div>
+  
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
+import { ref, computed, reactive } from "@vue/reactivity";
+  
+  const comission = 25
+  const userAmount = ref()
 
-  const amount = ref('')
-  function checkNumber (){
+  const getComission  = computed(() => {
+    let sum = userAmount.value / 100 * comission
+    return sum
+  })  
 
-  }
+  const getUserResultAmount  = computed(() => {
+    let resultAmount = userAmount.value - getComission.value
+    return resultAmount 
+  })
+
 
 </script>
