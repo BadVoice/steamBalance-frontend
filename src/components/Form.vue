@@ -6,8 +6,8 @@
     <body class="h-full">
     ```
   -->
-  <div class="flex flex-col  md:flex-row min-h-full items-center justify-around py-12 px-4 sm:px-6 lg:px-8">
-    <div class="w-full  max-w-full md:max-w-[60%] space-y-8">
+  <div class="flex flex-col  md:flex-row min-h-full items-end gap-x-10 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full  min-w-[60%] md:max-w-full space-y-8 ">
       <div>
         <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="Workflow" />
         <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Пополни баланс Steam</h2>
@@ -54,31 +54,36 @@
       </form>
     </div>
 
-    <div class="flex min-h-full flex-col items-center justify-around py-12 px-4 sm:px-6 lg:px-8">
-        <div class="flex">
-          <div class="flex gap-5">
+    <div class="w-full h-full ">
+
+      <div class="w-full h-full flex min-h-full w-full h-full flex-col">
+
+        
+          <div class="flex justify-between">
               <div class="flex ">
                 <span>Вы заплатите: </span>
               </div>
               
-              <div class="flex">{{ userAmount }}</div>
+              <div class="flex">{{ userAmount ? userAmount : '0' }}</div>
           </div>
-        </div>
+        
 
-        <div class="flex gap-5">
+        <div class="flex justify-between">
           <div class="flex">
             <span>Комиссия:</span>
           </div>
-          <div class="flex">{{ getComission ? getComission : '' }}</div>
+          <div class="flex">{{ getComission ? getComission : '0' }}</div>
         </div>
 
-        <div class="flex gap-5">
+        <div class="flex justify-between">
           <div class="flex">
             <span>Получите на Steam:</span>
           </div>
-          <div class="flex">{{ getUserResultAmount ? getUserResultAmount : '' }}</div>
+          <div class="flex">{{ getUserResultAmount ? getUserResultAmount : '0' }}</div>
         </div>
     </div>
+
+      </div>
 
       </div>
   
