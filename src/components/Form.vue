@@ -6,7 +6,7 @@
     <body class="h-full">
     ```
   -->
-  <div class="flex flex-col  md:flex-row min-h-full items-end gap-x-10 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="flex flex-col  md:flex-row min-h-full  items-end gap-x-10 py-12 px-4 sm:px-6 lg:px-8">
     <div class="w-full  min-w-[60%] md:max-w-full space-y-8 ">
       <div>
         <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="Workflow" />
@@ -21,21 +21,21 @@
         <input type="hidden" name="remember" value="true" />
         <div class="-space-y-px rounded-md shadow-sm">
           <div>
-            <label for="email-address" class="sr-only">Введите логи steam</label>
-            <input id="login" name="login"  required="" class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Введите логин steam" />
+            <label for="login" class="sr-only">Введите логи steam</label>
+            <input id="login" name="login"   min="100" max="10000" required  class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Введите логин steam" />
           </div>
           <div>
             <label for="number" class="sr-only">Сумма</label>
             <input 
-            v-model="userAmount"
-          
-            id="SUM" name="SUM" type="number" autocomplete="SUM" required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму" />
+            v-model="rules"
+            name="SUM" type="number"  required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
+            placeholder="от 100₽" />
           </div>
         </div>
 
         <div class="flex items-center justify-between">
           <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+            <input id="remember-me" min="100" max="11000"  name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
             <label for="remember-me" class="ml-2 block text-sm text-gray-900">
               Я подтверждаю, что указал логин Steam, а не никнейм</label>
           </div>
@@ -64,7 +64,7 @@
                 <span>Вы заплатите: </span>
               </div>
               
-              <div class="flex">{{ userAmount ? userAmount : '0' }}</div>
+              <div class="flex">{{ userAmount ? userAmount : 0  }}</div>
           </div>
         
 
@@ -90,16 +90,40 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive } from "@vue/reactivity";
-  
-  const comission = 25
+  import { ref, computed, reactive } from "@vue/reactivity";
+  import useVuelidate from '@vuelidate/core'
+  import { required, minValue, maxValue, between } from '@vuelidate/validators'
+
+
+
+  const comission = 25 
   const userAmount = ref()
+    
+  const rules = computed(( ) => {
+    return {
+      userAmount: { 
+        required,
+        minValue: minValue(100), 
+        maxValue: maxValue(11000),
+        betweenValue: between(100, 11000),},
+      
+      }
+    }
+  )
+
+  const v$ = useVuelidate(rules, userAmount)
+  
+
   const getComission  = computed(() => {
-    let sum = userAmount.value / 100 * comission
+      let sum = userAmount.value / 100 * comission
     return sum
   })  
+
   const getUserResultAmount  = computed(() => {
     let resultAmount = userAmount.value - getComission.value
     return resultAmount 
   })
+
+
+  
 </script>
