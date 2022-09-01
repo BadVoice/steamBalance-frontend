@@ -1,7 +1,6 @@
 <template>
   <!--
     This example requires updating your template:
-
     ```
     <html class="h-full bg-gray-50">
     <body class="h-full">
@@ -90,16 +89,12 @@ import { ref, computed, reactive } from "@vue/reactivity";
   
   const comission = 25
   const userAmount = ref()
-
   const getComission  = computed(() => {
     let sum = userAmount.value / 100 * comission
     return sum
   })  
-
   const getUserResultAmount  = computed(() => {
     let resultAmount = userAmount.value - getComission.value
     return resultAmount 
   })
-
-
 </script>
