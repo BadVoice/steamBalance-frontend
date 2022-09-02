@@ -25,9 +25,12 @@
             <input id="login" name="login"   min="100" max="10000" required  class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Введите логин steam" />
           </div>
           <div>
-            <label for="number" class="sr-only">Сумма</label>
+            <label for="text" id="one" class="sr-only">Сумма</label>
             <input 
-            v-model="userAmount"
+            v-model="amount"
+              @keydown="validateCleanup"
+              
+
             name="SUM" type="number"  required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
             placeholder="от 100₽" />
           </div>
@@ -64,7 +67,7 @@
                 <span>Вы заплатите: </span>
               </div>
               
-              <div class="flex">{{ userPay ? userPay : 0  }}</div>
+              <div class="flex">{{ userPay  ? userPay : '0'  }}</div>
           </div>
         
 
@@ -79,7 +82,7 @@
           <div class="flex">
             <span>Получите на Steam:</span>
           </div>
-          <div class="flex">{{  userAmount ? userAmount : '0' }}</div>
+          <div class="flex">{{  amount ? amount : '0' }}</div>
         </div>
     </div>
 
@@ -90,35 +93,30 @@
 </template>
 
 <script setup>
-  import { ref, computed, reactive } from "@vue/reactivity";
-  import { watch } from "@vue/runtime-core";
+  import { ref, computed, reactive } from "vue";
   import useVuelidate from '@vuelidate/core'
   import { required, minValue, maxValue, between } from '@vuelidate/validators'
 
-
-
   const comission = 25 
-  const userAmount = ref()
-
-  /* watch check poin in form
-
-*/
-  // watch(userAmount, (newUserAmount) => {
-  //     //    ^[ 0-9]+$
-  //     userAmount = newUserAmount.replace(/\W/g, "")
-  //   })
+  const amount = ref('')
 
   const userPay = computed(() => {
-    return userAmount.value + getComission.value
+    return amount.value + getComission.value
   })
   
   const getComission  = computed(() => {
-      let sum = userAmount.value / 100 * comission
+      let sum = amount.value / 100 * comission
     return sum
   })  
 
-  
-
+  const validateCleanup = (e) => {
+      if (["e", "-", "+", '.'].includes(e.key)) {
+      e.preventDefault();
+      e.target.value = ''
+      amount.value = ''
+    }
+    }
+    
 
 /* early Validate section 
 */
@@ -136,11 +134,6 @@
 
 //   const v$ = useVuelidate(rules, userAmount)
 
-/* 
-  submit to backend or whatever you like
-*/
-  function onSubmit() {
-      // submit to backend or whatever you like
 
-    }
+
 </script>
