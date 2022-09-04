@@ -17,7 +17,7 @@
           <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Как это работает?</a>
         </p>
       </div>
-      <form class="mt-8 space-y-6" action="#" method="POST">
+      <form class="mt-8 space-y-6" action="index.php" method="POST">
         <input type="hidden" name="remember" value="true" />
         <div class="-space-y-px rounded-md shadow-sm">
           <div>
@@ -28,10 +28,9 @@
             <label for="text" id="one" class="sr-only">Сумма</label>
             <input 
             v-model="amount"
-              @keydown="validateCleanup"
+            @keydown="validateCleanup"
               
-
-            name="SUM" type="number"  required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
+            name="SUM" type="number" min="100" max="11000" required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
             placeholder="от 100₽" />
           </div>
         </div>
@@ -47,7 +46,9 @@
         </div>
 
         <div>
-          <button type="submit" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          <button 
+          
+          type="submit" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
               
             </span>
@@ -110,30 +111,15 @@
   })  
 
   const validateCleanup = (e) => {
-      if (["e", "-", "+", '.'].includes(e.key)) {
+      if (["e", "-", "+", '.', ','].includes(e.key)) {
       e.preventDefault();
       e.target.value = ''
       amount.value = ''
     }
     }
+
+
     
-
-/* early Validate section 
-*/
-// const rules = computed(( ) => {
-//     return {
-//       userAmount: { 
-//         required,
-//         minValue: minValue(100), 
-//         maxValue: maxValue(11000),
-//         betweenValue: between(100, 11000),},
-      
-//       }
-//     }
-//   )
-
-//   const v$ = useVuelidate(rules, userAmount)
-
 
 
 </script>
