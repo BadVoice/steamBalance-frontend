@@ -17,17 +17,19 @@
           <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Как это работает?</a>
         </p>
       </div>
-      <form class="mt-8 space-y-6" action="index.php" method="POST">
+      <form class="mt-8 space-y-6" action="#" method="POST">
         <input type="hidden" name="remember" value="true" />
         <div class="-space-y-px rounded-md shadow-sm">
           <div>
             <label for="login" class="sr-only">Введите логи steam</label>
-            <input id="login" name="login"   min="100" max="10000" required  class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Введите логин steam" />
+            <input 
+            v-model="steamLogin"
+            id="login" name="login"   min="100" max="10000" required  class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" placeholder="Введите логин steam" />
           </div>
           <div>
             <label for="text" id="one" class="sr-only">Сумма</label>
             <input 
-            v-model="amount"
+            v-model.number="amount"
             @keydown="validateCleanup"
               
             name="SUM" type="number" min="100" max="11000" required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
@@ -37,7 +39,10 @@
 
         <div class="flex items-center justify-between">
           <div class="flex items-center">
-            <input id="remember-me" min="100" max="11000"  name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+            <input 
+            
+            
+            id="remember-me"  name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
             <label for="remember-me" class="ml-2 block text-sm text-gray-900">
               Я подтверждаю, что указал логин Steam, а не никнейм</label>
           </div>
@@ -47,7 +52,7 @@
 
         <div>
           <button 
-          
+          @submit.prevent="createPost"
           type="submit" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
               
@@ -85,6 +90,7 @@
           </div>
           <div class="flex">{{  amount ? amount : '0' }}</div>
         </div>
+        
     </div>
 
       </div>
@@ -95,11 +101,23 @@
 
 <script setup>
   import { ref, computed, reactive } from "vue";
+  import axios from 'axios'
   import useVuelidate from '@vuelidate/core'
   import { required, minValue, maxValue, between } from '@vuelidate/validators'
+    
+  const amount = ref('')
+  const steamLogin = ref('')
 
   const comission = 25 
-  const amount = ref('')
+
+  // const agree = reactive([
+  //   true
+  // ])
+
+  const postData = reactive({
+    login: steamLogin.value,
+    sum: amount.value
+  })
 
   const userPay = computed(() => {
     return amount.value + getComission.value
@@ -118,7 +136,11 @@
     }
     }
 
-
+    const createPost = () => {
+      axios.post('https://jsonplaceholder.typicode.com/posts')
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+    }
     
 
 
